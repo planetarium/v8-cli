@@ -13,7 +13,7 @@ const { registerConfig } = require('./commands/config-cmd');
 
 program
   .name('v8')
-  .version('0.1.0')
+  .version(require('../package.json').version)
   .description('Token-optimized CLI for V8 platform admin API')
   .option('--env <env>', 'environment (test|local)')
   .option('--token <jwt>', 'bearer token override')
