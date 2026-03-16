@@ -1,0 +1,17 @@
+{
+  "name": "v8-cli",
+  "version": "0.1.0",
+  "description": "Token-optimized CLI for V8 platform admin API",
+  "bin": {
+    "v8": "./src/index.js"
+  },
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/planetarium/v8-cli.git"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "commander": "^14.0.3"
+  }
+}
