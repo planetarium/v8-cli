@@ -11,10 +11,15 @@ const VERSE_COLS = [
   { key: 'visibility', label: 'Vis' },
   { key: 'featured', label: 'Feat' },
   { key: 'showcase', label: 'Show' },
+  { key: 'createdDate', label: 'Created' },
 ];
 
 function extractVerses(data) {
-  return data.items || data.verses || (Array.isArray(data) ? data : []);
+  const rows = data.items || data.verses || (Array.isArray(data) ? data : []);
+  return rows.map((v) => ({
+    ...v,
+    createdDate: v.createdAt ? v.createdAt.slice(0, 10) : '',
+  }));
 }
 
 function registerVerses(program) {
@@ -73,6 +78,7 @@ function registerVerses(program) {
       console.log(`featured:   ${v.featured}`);
       console.log(`showcase:   ${v.showcase}`);
       console.log(`creator:    ${v.creatorName || v.creatorHandle || 'n/a'}`);
+      console.log(`created:    ${v.createdAt ? v.createdAt.slice(0, 10) : 'n/a'}`);
     });
 
   cmd
