@@ -8,12 +8,7 @@ Token-optimized CLI for V8 platform admin API. ~82% fewer tokens compared to raw
 curl -fsSL https://raw.githubusercontent.com/planetarium/v8-cli/main/install.sh | bash
 ```
 
-Or manually:
-
-```bash
-git clone https://github.com/planetarium/v8-cli.git ~/.v8-cli
-cd ~/.v8-cli && npm install && npm link
-```
+For private/internal repos, ensure `gh auth login` is done first, or set `GH_TOKEN`.
 
 ## Setup
 
