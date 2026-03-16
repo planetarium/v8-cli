@@ -16,7 +16,8 @@ mkdir -p "$INSTALL_DIR"
 
 REPO="planetarium/v8-cli"
 if command -v gh &>/dev/null; then
-  gh release download --repo "$REPO" --pattern "*.tgz" --output /tmp/v8-cli.tgz --clobber
+  TAG=$(gh release view --repo "$REPO" --json tagName -q '.tagName')
+  gh release download "$TAG" --repo "$REPO" --pattern "*.tgz" --output /tmp/v8-cli.tgz --clobber
 else
   TAG=$(curl -sf "https://api.github.com/repos/$REPO/releases/latest" | node -e "process.stdin.on('data',d=>console.log(JSON.parse(d).tag_name))")
   curl -sfL "https://github.com/$REPO/releases/download/$TAG/v8-cli-${TAG#v}.tgz" -o /tmp/v8-cli.tgz
