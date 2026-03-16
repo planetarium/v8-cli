@@ -86,6 +86,13 @@ v8 --json comments list --limit 5
 2. `v8 comments search --by userEmail <email> --filter all` → get all by suspect
 3. `v8 comments delete <id1> <id2> <id3>` → bulk delete
 
+## Local Workflows
+
+If `~/.v8-cli/local/workflows.md` exists, read it for additional user-defined workflows. This file is not managed by the skill and survives upgrades.
+
+To propose a new workflow for the shared CLI, run:
+`gh issue create --repo planetarium/v8-cli --title "workflow: <description>"`
+
 ## API Reference
 
 See `references/admin-api.md` for full endpoint details (useful when CLI doesn't cover an edge case).
