@@ -4,6 +4,14 @@ set -euo pipefail
 INSTALL_DIR="${V8_CLI_HOME:-$HOME/.v8-cli}"
 SKILL_DIR="$HOME/.claude/skills/v8-admin"
 
+# Check prerequisites
+for cmd in git node npm; do
+  if ! command -v "$cmd" &>/dev/null; then
+    echo "Error: '$cmd' is required but not installed." >&2
+    exit 1
+  fi
+done
+
 echo "Installing v8-cli to $INSTALL_DIR ..."
 
 # Clone or update
