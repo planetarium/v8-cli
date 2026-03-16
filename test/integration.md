@@ -38,7 +38,7 @@ v8 users search nonexistent_user_xyz
 ### 3. Credits
 
 ```bash
-v8 credits balance ven@planetariumhq.com
+v8 credits balance <admin-email>
 ```
 - [ ] `uid  email  $금액` 형식 출력
 
