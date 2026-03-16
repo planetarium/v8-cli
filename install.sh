@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_DIR="${V8_CLI_HOME:-$HOME/.v8-cli}"
+INSTALL_DIR="${V8_CLI_HOME:-$HOME/v8-cli}"
 SKILL_DIR="$HOME/.claude/skills/v8-admin"
 
 # Check prerequisites
