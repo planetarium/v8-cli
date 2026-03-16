@@ -6,12 +6,16 @@ const { table, ok, err, requireToken } = require('../output');
 
 const VERSE_COLS = [
   { key: 'verseId', label: 'ID', maxWidth: 25 },
-  { key: 'shortId', label: 'ShortID' },
+  { key: 'verseShortId', label: 'ShortID' },
   { key: 'title', label: 'Title', maxWidth: 30 },
   { key: 'visibility', label: 'Vis' },
   { key: 'featured', label: 'Feat' },
   { key: 'showcase', label: 'Show' },
 ];
+
+function extractVerses(data) {
+  return data.items || data.verses || (Array.isArray(data) ? data : []);
+}
 
 function registerVerses(program) {
   const cmd = program.command('verses').description('Verse management');
@@ -32,8 +36,7 @@ function registerVerses(program) {
       const res = await get(base, `/v1/admin/verse?${qs}`, config.token);
       if (res.status !== 200) return err(`${res.status}: ${res.data.message || 'failed'}`);
       if (this.parent.parent.opts().json) return console.log(JSON.stringify(res.data));
-      const verses = res.data.verses || res.data;
-      table(verses, VERSE_COLS);
+      table(extractVerses(res.data), VERSE_COLS);
     });
 
   cmd
@@ -49,8 +52,7 @@ function registerVerses(program) {
       const res = await get(base, `/v1/admin/verse/search?${qs}`, config.token);
       if (res.status !== 200) return err(`${res.status}: ${res.data.message || 'failed'}`);
       if (this.parent.parent.opts().json) return console.log(JSON.stringify(res.data));
-      const verses = res.data.verses || res.data;
-      table(verses, VERSE_COLS);
+      table(extractVerses(res.data), VERSE_COLS);
     });
 
   cmd
@@ -65,7 +67,7 @@ function registerVerses(program) {
       if (this.parent.parent.opts().json) return console.log(JSON.stringify(res.data));
       const v = res.data;
       console.log(`id:         ${v.verseId}`);
-      console.log(`shortId:    ${v.shortId}`);
+      console.log(`shortId:    ${v.verseShortId || v.shortId}`);
       console.log(`title:      ${v.title}`);
       console.log(`visibility: ${v.visibility}`);
       console.log(`featured:   ${v.featured}`);
