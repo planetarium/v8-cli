@@ -71,14 +71,16 @@ function registerVerses(program) {
       if (res.status !== 200) return err(`${res.status}: ${res.data.message || 'failed'}`);
       if (this.parent.parent.opts().json) return console.log(JSON.stringify(res.data));
       const v = res.data;
-      console.log(`id:         ${v.verseId}`);
-      console.log(`shortId:    ${v.verseShortId || v.shortId}`);
-      console.log(`title:      ${v.title}`);
-      console.log(`visibility: ${v.visibility}`);
-      console.log(`featured:   ${v.featured}`);
-      console.log(`showcase:   ${v.showcase}`);
-      console.log(`creator:    ${v.creatorName || v.creatorHandle || 'n/a'}`);
-      console.log(`created:    ${v.createdAt ? v.createdAt.slice(0, 10) : 'n/a'}`);
+      console.log(`id:            ${v.verseId}`);
+      console.log(`shortId:       ${v.verseShortId || v.shortId}`);
+      console.log(`title:         ${v.title}`);
+      console.log(`description:   ${v.description || ''}`);
+      console.log(`shortDesc:     ${v.shortDescription || ''}`);
+      console.log(`visibility:    ${v.visibility}`);
+      console.log(`featured:      ${v.featured}`);
+      console.log(`showcase:      ${v.showcase}`);
+      console.log(`creator:       ${v.creatorName || v.creatorHandle || 'n/a'}`);
+      console.log(`created:       ${v.createdAt ? v.createdAt.slice(0, 10) : 'n/a'}`);
     });
 
   cmd
@@ -88,6 +90,8 @@ function registerVerses(program) {
     .option('--showcase <bool>', 'set showcase')
     .option('--hidden <bool>', 'hide from recommendations')
     .option('--visibility <v>', 'public|unlisted|private')
+    .option('--description <text>', 'set verse description')
+    .option('--short-description <text>', 'set verse short description')
     .action(async function (verseId) {
       const config = this.parent.parent._v8config;
       requireToken(config);
@@ -98,7 +102,9 @@ function registerVerses(program) {
       if (opts.showcase !== undefined) body.showcase = opts.showcase === 'true';
       if (opts.hidden !== undefined) body.isHiddenFromRecommendation = opts.hidden === 'true';
       if (opts.visibility) body.visibility = opts.visibility;
-      if (Object.keys(body).length === 0) return err('No fields to update. Use --featured, --showcase, --hidden, or --visibility');
+      if (opts.description !== undefined) body.description = opts.description;
+      if (opts.shortDescription !== undefined) body.shortDescription = opts.shortDescription;
+      if (Object.keys(body).length === 0) return err('No fields to update. Use --featured, --showcase, --hidden, --visibility, --description, or --short-description');
       const res = await post(base, `/v1/admin/verse/${encodeURIComponent(verseId)}`, config.token, body);
       if (res.status !== 200 && res.status !== 201) return err(`${res.status}: ${res.data.message || 'failed'}`);
       ok(`Verse ${verseId} updated: ${JSON.stringify(body)}`);
