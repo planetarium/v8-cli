@@ -10,6 +10,7 @@ const { registerCoupons } = require('./commands/coupons');
 const { registerVerses } = require('./commands/verses');
 const { registerAuth } = require('./commands/auth');
 const { registerConfig } = require('./commands/config-cmd');
+const { track, report } = require('./usage');
 const { registerGamePayments } = require('./commands/gen-game-payments');
 const { registerVerseTags } = require('./commands/gen-verse-tags');
 const { registerMissions } = require('./commands/gen-missions');
@@ -22,15 +23,27 @@ program
   .option('--env <env>', 'environment (test|local)')
   .option('--token <jwt>', 'bearer token override')
   .option('--json', 'output raw JSON')
-  .hook('preAction', (thisCommand) => {
-    const opts = thisCommand.optsWithGlobals();
+  .hook('preAction', (thisCommand, actionCommand) => {
+    const target = actionCommand || thisCommand;
+    const opts = target.optsWithGlobals();
     const config = loadConfig();
     if (opts.env) config.env = opts.env;
     if (opts.token) config.token = opts.token;
-    thisCommand._v8config = config;
+    target._v8config = config;
+    // Also set on thisCommand for compatibility
+    if (target !== thisCommand) thisCommand._v8config = config;
+    // Track usage: "parent subcommand" e.g. "comments list"
+    const parts = [];
+    let cmd = target;
+    while (cmd && cmd.name() !== 'v8') {
+      parts.unshift(cmd.name());
+      cmd = cmd.parent;
+    }
+    if (parts.length > 0 && parts[0] !== 'usage') track(parts.join(' '));
   });
 
 registerConfig(program);
+program.command('usage').description('Show command usage stats').action(report);
 registerAuth(program);
 registerUsers(program);
 registerCredits(program);
