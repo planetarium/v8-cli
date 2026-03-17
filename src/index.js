@@ -10,6 +10,10 @@ const { registerCoupons } = require('./commands/coupons');
 const { registerVerses } = require('./commands/verses');
 const { registerAuth } = require('./commands/auth');
 const { registerConfig } = require('./commands/config-cmd');
+const { registerGamePayments } = require('./commands/gen-game-payments');
+const { registerVerseTags } = require('./commands/gen-verse-tags');
+const { registerMissions } = require('./commands/gen-missions');
+const { registerAnalytics } = require('./commands/gen-analytics');
 
 program
   .name('v8')
@@ -33,5 +37,9 @@ registerCredits(program);
 registerCoupons(program);
 registerComments(program);
 registerVerses(program);
+registerGamePayments(program);
+registerVerseTags(program);
+registerMissions(program);
+registerAnalytics(program);
 
 program.parse();
