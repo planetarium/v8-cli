@@ -97,8 +97,16 @@ To propose a new workflow for the shared CLI, run:
 
 See `references/admin-api.md` for full endpoint details (useful when CLI doesn't cover an edge case).
 
+## Command Promotion
+
+Auto-generated commands (`game-payments`, `analytics`, `missions`, `verse-tags`) output raw JSON.
+If a gen-* command's output is repeatedly inconvenient (too verbose, needs formatting), check `v8 usage` for frequency. If a command has 5+ uses, consider promoting it to a hand-written version with formatted table output:
+
+`gh issue create --repo planetarium/v8-cli --title "promote: <command>" --label quick-fix`
+
 ## Notes
 
 - Credit amounts in `credits give` are in USD (e.g. `20` = $20)
 - Comment search requires `--by` and keyword together
 - `--json` flag outputs raw API response for piping or debugging
+- `v8 usage` shows command usage stats
